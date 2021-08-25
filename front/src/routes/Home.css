@@ -1,0 +1,77 @@
+@-ms-viewport {
+    width: device-width; }
+  body {
+    -ms-overflow-style: scrollbar; }
+  
+  @media screen and (max-width: 480px) {
+    html, body {
+      min-width: 320px; } }
+  html {
+    box-sizing: border-box; }
+  
+  *, *:before, *:after {
+    box-sizing: inherit; }
+  
+  body {
+    background-color:white;
+  -moz-animation: none !important;
+  -webkit-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
+  -moz-transition: none !important;
+  -webkit-transition: none !important;
+  -ms-transition: none !important;
+  transition: none !important;
+  flex-direction:column;
+  margin:0;
+  padding:0;
+  }
+  
+  .div-one {
+  background-color:white;
+  flex-direction:column;
+  height:200px;
+  margin:0;
+  padding:0;
+  }
+  .div-two {
+    display: flex;
+    background-color:white;
+    flex-direction:column;
+    justify-content: flex-end;
+    align-items: center;
+    margin:0;
+    padding:0;
+    }
+  .div-three {
+    display: flex;
+    background-color:white;
+    flex-direction:column;
+    height:200px;
+    margin:0;
+    padding:0;
+    }
+    #logo {
+      justify-content: center;
+      margin-top: 50px;
+    }
+    #city {
+      justify-content: center;
+      margin-top: 100px;
+      align-items: flex-end;
+      width:100%;
+      object-fit: cover;
+    }
+    #btn {
+      justify-content: center;
+      margin-top: 30px;
+      margin-bottom: 30px;
+  
+    }
+    #cloud {
+      margin-top: 30px;
+    }
+    #custom-login-btn {
+      margin-top:30px;
+    }
+  
