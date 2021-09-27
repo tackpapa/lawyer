@@ -7,7 +7,14 @@ import sharp from 'sharp';
 const { PassThrough } = require('stream');
 
 const create: Controller = async (ctx) => {
-  const { title, context, tags, price, location, category } = ctx.request.body;
+  const {
+    title,
+    context,
+    tags,
+    address,
+    location,
+    category,
+  } = ctx.request.body;
   const author = ctx.state.user._id;
   const user = await db.users.findOneAndUpdate(
     { _id: author },
@@ -21,7 +28,7 @@ const create: Controller = async (ctx) => {
     author,
     category,
     tags,
-    price,
+    address,
     location,
   });
   const post = await db.listings.findOne({ _id: item._id }).populate('author');
@@ -37,30 +44,31 @@ const create: Controller = async (ctx) => {
   const promises = arr.map(async ({ path }: { path: string }, i: number) => {
     const body = sharp(path).resize(800, 800).png();
     var param = {
-      Bucket: 'ridasprod',
+      Bucket: 'lawyers',
       Key: `listingimage/${item._id + i}`,
       ACL: 'public-read',
       Body: body.pipe(PassThrough()),
       ContentType: 'image/png',
     };
-    const lala = await upload(param);
-    await (item as any).pics.push(lala.Location);
+    const uploadphoto = await upload(param);
+    await (item as any).pics.push(uploadphoto.Location);
     if (i === arr.length - 1) {
       await item.save();
     }
   });
   await Promise.all(promises);
 
-  const post2 = await db.listings.findOne({ _id: item._id }).populate('author');
+  const thepost = await db.listings
+    .findOne({ _id: item._id })
+    .populate('author');
   ctx.status = 200;
-  ctx.body = post2;
+  ctx.body = thepost;
 };
 
 const update: Controller = async (ctx) => {
   const { id } = ctx.params;
   const { context, title, tags, price, location, category } = ctx.request.body;
   const newtag = JSON.parse(tags);
-  const author = ctx.state.user._id;
   const post = await db.listings.findOneAndUpdate(
     { _id: id },
     {

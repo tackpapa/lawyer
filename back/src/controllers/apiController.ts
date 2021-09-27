@@ -3,9 +3,9 @@ import { Controller } from './types';
 
 const home: Controller = async (ctx) => {
   const posts = await db.posts.find().sort({ _id: -1 }).limit(5);
-  const tips = await db.tips.find().sort({ _id: -1 }).limit(5);
-  const questions = await db.questions.find().sort({ _id: -1 }).limit(5);
-  ctx.body = { posts, tips, questions };
+  const proposals = await db.proposals.find().sort({ _id: -1 }).limit(5);
+  const listings = await db.listings.find().sort({ _id: -1 }).limit(5);
+  ctx.body = { posts, proposals, listings };
 };
 
 const hotsearch: Controller = async (ctx) => {
@@ -25,20 +25,20 @@ const tag: Controller = async (ctx) => {
   ctx.body = posts;
 };
 
-const tips: Controller = async (ctx) => {
-  const tips = await db.tips.find().sort({ date: -1 }).limit(20);
-  ctx.body = tips;
+const proposals: Controller = async (ctx) => {
+  const proposals = await db.proposals.find().sort({ date: -1 }).limit(20);
+  ctx.body = proposals;
 };
 
-const questions: Controller = async (ctx) => {
-  const questions = await db.questions.find().sort({ _id: -1 }).limit(20);
-  ctx.body = questions;
+const listings: Controller = async (ctx) => {
+  const listings = await db.listings.find().sort({ _id: -1 }).limit(20);
+  ctx.body = listings;
 };
 
 export default {
   home,
   tag,
-  tips,
+  proposals,
   hotsearch,
-  questions,
+  listings,
 };

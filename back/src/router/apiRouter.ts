@@ -9,7 +9,7 @@ const router = new Router({
 router.get('/home', apiController.home);
 router.get('/hotsearch', apiController.hotsearch);
 router.get('/tag/:tag', apiController.tag);
-router.get('/tips', apiController.tips);
-router.get('/questions', apiController.questions);
+router.get('/proposals', apiController.proposals);
+router.get('/listings', apiController.listings);
 
 export default router;

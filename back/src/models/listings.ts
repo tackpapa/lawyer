@@ -1,23 +1,23 @@
 import mongoose, { Schema, Model, Document } from 'mongoose';
 
-export interface Question {
+export interface Listing {
   title: string;
   author: string;
   context: string;
   pics: string[];
   tags: string[];
   views: number;
-  price: number;
+  address: string;
   category: string;
 }
 
-export interface QuestionDocument extends Question, Document {
+export interface ListingDocument extends Listing, Document {
   //method를 넣는다
   viewUp: () => void;
 }
-export interface QuestionModel extends Model<QuestionDocument> {}
+export interface ListingModel extends Model<ListingDocument> {}
 
-const QuestionSchema: Schema<QuestionDocument> = new mongoose.Schema(
+const ListingSchema: Schema<ListingDocument> = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -28,6 +28,7 @@ const QuestionSchema: Schema<QuestionDocument> = new mongoose.Schema(
       ref: 'Users',
     },
     context: String,
+    address: String,
     notice: {
       type: Boolean,
       default: false,
@@ -54,31 +55,26 @@ const QuestionSchema: Schema<QuestionDocument> = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    price: {
-      type: Number,
-      default: 0,
-    },
     location: String,
   },
   {
     timestamps: true,
   }
 );
-QuestionSchema.index({
+ListingSchema.index({
   title: 'text',
   author: 'text',
   tags: 'text',
   context: 'text',
-  price: 'text',
 });
 
-QuestionSchema.methods.viewUp = async function () {
+ListingSchema.methods.viewUp = async function () {
   this.views += 1;
   this.save();
 };
-const model = mongoose.model<QuestionDocument, QuestionModel>(
-  'Questions',
-  QuestionSchema
+const model = mongoose.model<ListingDocument, ListingModel>(
+  'Listings',
+  ListingSchema
 );
 
 export default model;

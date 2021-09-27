@@ -1,20 +1,20 @@
 import Router from 'koa-router';
-import TipController from 'controllers/proposalController';
+import ProposalController from 'controllers/proposalController';
 import { requireAuth } from 'utils/jwt';
 
 const router = new Router({
-  prefix: '/proposal',
+  prefix: '/proposals',
 });
 
-router.post('/create', requireAuth, TipController.create);
-router.get('/deleteone/:id', requireAuth, TipController.deleteone);
-router.get('/findone/:id', TipController.findone);
-router.get('/search/:query', TipController.search);
-router.get('/bycategory/:query/:last', TipController.byCategory);
-router.get('/latest/:last', TipController.latest);
-router.get('/allproposal/:last', TipController.allproposal);
-router.get('/proposalpage/:page', TipController.proposalpage);
-router.get('/newones/:last', TipController.newones);
-router.post('/update/:id', requireAuth, TipController.update);
+router.post('/create', requireAuth, ProposalController.create);
+router.get('/deleteone/:id', requireAuth, ProposalController.deleteone);
+router.get('/findone/:id', ProposalController.findone);
+router.get('/search/:query', ProposalController.search);
+router.get('/bycategory/:query/:last', ProposalController.byCategory);
+router.get('/latest/:last', ProposalController.latest);
+router.get('/allproposal/:last', ProposalController.allproposal);
+router.get('/proposalpage/:page', ProposalController.proposalpage);
+router.get('/newones/:last', ProposalController.newones);
+router.post('/update/:id', requireAuth, ProposalController.update);
 
 export default router;

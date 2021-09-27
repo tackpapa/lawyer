@@ -7,8 +7,8 @@ export interface Proposal {
   pics: string[];
   tags: string[];
   views: number;
-  location: number;
   category: string;
+  price: string;
 }
 
 export interface ProposalDocument extends Proposal, Document {
@@ -50,7 +50,10 @@ const ProposalSchema: Schema<ProposalDocument> = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    location: String,
+    price: {
+      type: String,
+      default: 0,
+    },
     views: {
       type: Number,
       default: 0,
@@ -66,6 +69,7 @@ ProposalSchema.index({
   tags: 'text',
   context: 'text',
   location: 'text',
+  price: 'text',
 });
 
 ProposalSchema.methods.viewUp = async function () {

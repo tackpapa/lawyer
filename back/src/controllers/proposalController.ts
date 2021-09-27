@@ -36,7 +36,7 @@ const create: Controller = async (ctx) => {
   const promises = arr.map(async ({ path }: { path: string }, i: number) => {
     const body = sharp(path).resize(800, 800).png();
     var param = {
-      Bucket: 'ridasprod',
+      Bucket: 'lawyers',
       Key: `proposalimage/${item._id + i}`,
       ACL: 'public-read',
       Body: body.pipe(PassThrough()),

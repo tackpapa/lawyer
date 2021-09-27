@@ -25,7 +25,7 @@ const create: Controller = async (ctx) => {
     link,
   });
   const param = {
-    Bucket: 'ridasprod',
+    Bucket: 'lawyers',
     Key: `banners/${item._id + Math.random()}`,
     ACL: 'public-read',
     Body: await fs.createReadStream(ctx.request.files.pic.path),
@@ -42,8 +42,8 @@ const deleteone: Controller = async (ctx) => {
   const id = ctx.params.id;
   const banner: any = await db.banners.findOne({ _id: id });
   if (banner.pic) {
-    const ret: any = await remove({
-      Bucket: 'ridasprod',
+    const erase: any = await remove({
+      Bucket: 'lawyers',
       Key: banner.pic.substr(banner.pic.indexOf('banners')),
     });
   }

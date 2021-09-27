@@ -9,7 +9,6 @@ export interface User {
   liked: string[];
   Noti: string[];
   level: number;
-  reviews: string[];
 }
 
 export interface UserDocument extends Document, User {}
@@ -50,12 +49,6 @@ const UserSchema: Schema<UserDocument> = new mongoose.Schema(
         ref: 'Posts',
       },
     ],
-    reviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Questions',
-      },
-    ],
     Noti: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -78,7 +71,6 @@ UserSchema.index({
   email: 'text',
   name: 'text',
   cell: 'text',
-  lawyer: 'boolean',
   level: 'number',
   kakaoid: 'number',
 });

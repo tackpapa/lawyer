@@ -92,6 +92,7 @@ const login: Controller = async (ctx) => {
       profilepic: newuser.profilepic,
       liked: newuser.liked,
       Noti: newuser.Noti,
+      level: newuser.level,
     };
     payload = payload3;
   }
@@ -168,12 +169,12 @@ const uploadProfile: Controller = async (ctx) => {
   const body = sharp(path).resize(400, 400).png();
 
   const ret: any = await remove({
-    Bucket: 'ridasprod',
+    Bucket: 'lawyers',
     Key: user.profilepic.substr(user.profilepic.indexOf('profileimage')),
   });
 
   const param = {
-    Bucket: 'ridasprod',
+    Bucket: 'lawyers',
     Key: `profileimage/${user._id}_${new Date().getTime()}`,
     ACL: 'public-read',
     Body: body.pipe(PassThrough()),
@@ -193,7 +194,7 @@ const userprofile: Controller = async (ctx) => {
     .find({ author: ObjectId(userid) })
     .populate('author')
     .exec();
-  const tips = await db.proposals
+  const proposals = await db.proposals
     .find({ author: ObjectId(userid) })
     .populate('author')
     .exec();
@@ -204,7 +205,7 @@ const userprofile: Controller = async (ctx) => {
   ctx.status = 200;
   ctx.body = {
     post: posts,
-    tip: tips,
+    proposal: proposals,
     listing: listings,
   };
 };
