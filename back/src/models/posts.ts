@@ -1,4 +1,3 @@
-import { boolean } from 'joi';
 import mongoose, { Schema, Model, Document } from 'mongoose';
 
 export interface Post {

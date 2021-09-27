@@ -20,8 +20,8 @@ const create: Controller = async (ctx) => {
     [key: string]: keyof typeof db;
   } = {
     Post: 'posts',
-    Tip: 'tips',
-    Question: 'questions',
+    Proposal: 'proposals',
+    Listing: 'listings',
   };
 
   ctx.body = comment;

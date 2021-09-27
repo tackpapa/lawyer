@@ -193,11 +193,11 @@ const userprofile: Controller = async (ctx) => {
     .find({ author: ObjectId(userid) })
     .populate('author')
     .exec();
-  const tips = await db.tips
+  const tips = await db.proposals
     .find({ author: ObjectId(userid) })
     .populate('author')
     .exec();
-  const questions = await db.questions
+  const listings = await db.listings
     .find({ author: ObjectId(userid) })
     .populate('author')
     .exec();
@@ -205,7 +205,7 @@ const userprofile: Controller = async (ctx) => {
   ctx.body = {
     post: posts,
     tip: tips,
-    question: questions,
+    listing: listings,
   };
 };
 

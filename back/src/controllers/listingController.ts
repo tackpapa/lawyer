@@ -15,7 +15,7 @@ const create: Controller = async (ctx) => {
   );
   user?.save();
 
-  const item = await db.questions.create({
+  const item = await db.listings.create({
     title,
     context,
     author,
@@ -24,7 +24,7 @@ const create: Controller = async (ctx) => {
     price,
     location,
   });
-  const post = await db.questions.findOne({ _id: item._id }).populate('author');
+  const post = await db.listings.findOne({ _id: item._id }).populate('author');
   if (ctx.request.files.pic === undefined) {
     return (ctx.status = 200), (ctx.body = post);
   }
@@ -38,7 +38,7 @@ const create: Controller = async (ctx) => {
     const body = sharp(path).resize(800, 800).png();
     var param = {
       Bucket: 'ridasprod',
-      Key: `questionimage/${item._id + i}`,
+      Key: `listingimage/${item._id + i}`,
       ACL: 'public-read',
       Body: body.pipe(PassThrough()),
       ContentType: 'image/png',
@@ -51,9 +51,7 @@ const create: Controller = async (ctx) => {
   });
   await Promise.all(promises);
 
-  const post2 = await db.questions
-    .findOne({ _id: item._id })
-    .populate('author');
+  const post2 = await db.listings.findOne({ _id: item._id }).populate('author');
   ctx.status = 200;
   ctx.body = post2;
 };
@@ -63,7 +61,7 @@ const update: Controller = async (ctx) => {
   const { context, title, tags, price, location, category } = ctx.request.body;
   const newtag = JSON.parse(tags);
   const author = ctx.state.user._id;
-  const post = await db.questions.findOneAndUpdate(
+  const post = await db.listings.findOneAndUpdate(
     { _id: id },
     {
       context: context,
@@ -81,7 +79,7 @@ const update: Controller = async (ctx) => {
 
 const findone: Controller = async (ctx) => {
   const { id } = ctx.params;
-  const post = await db.questions
+  const post = await db.listings
     .findOne({ _id: id })
     .populate('author')
     .populate('comments');
@@ -103,7 +101,7 @@ const search: Controller = async (ctx) => {
   } else {
     db.searches.create({ query });
   }
-  const post = await db.questions
+  const post = await db.listings
     .find({ $text: { $search: query } })
     .populate('author')
     .sort({ _id: -1 })
@@ -114,7 +112,7 @@ const search: Controller = async (ctx) => {
 
 const latest: Controller = async (ctx) => {
   const { last } = ctx.params;
-  const posts = await db.questions
+  const posts = await db.listings
     .find({ createdAt: { $lt: last } })
     .populate('author')
     .sort({ _id: -1 })
@@ -123,9 +121,9 @@ const latest: Controller = async (ctx) => {
   ctx.body = posts;
 };
 
-const allquestion: Controller = async (ctx) => {
+const alllisting: Controller = async (ctx) => {
   const { last } = ctx.params;
-  const posts = await db.questions
+  const posts = await db.listings
     .find({ createdAt: { $lt: last } })
     .populate('author')
     .sort({ _id: -1 })
@@ -134,12 +132,12 @@ const allquestion: Controller = async (ctx) => {
   ctx.body = posts;
 };
 
-const questionpage: Controller = async (ctx) => {
+const listingpage: Controller = async (ctx) => {
   const { page } = ctx.params;
   const row = 15;
   const skip = (parseInt(page, 10) - 1) * row;
-  const allpost = await db.questions.countDocuments({});
-  const posts = await db.questions
+  const allpost = await db.listings.countDocuments({});
+  const posts = await db.listings
     .find({})
     .skip(skip)
     .populate('author')
@@ -151,7 +149,7 @@ const questionpage: Controller = async (ctx) => {
 
 const newones: Controller = async (ctx) => {
   const { last } = ctx.params;
-  const posts = await db.questions
+  const posts = await db.listings
     .find({ createdAt: { $gt: last } })
     .populate('author')
     .sort({ _id: -1 });
@@ -161,7 +159,7 @@ const newones: Controller = async (ctx) => {
 
 const byCategory: Controller = async (ctx) => {
   const { query, last } = ctx.params;
-  const post = await db.questions
+  const post = await db.listings
     .find({ category: query })
     .where('createdAt')
     .lt(last)
@@ -174,7 +172,7 @@ const byCategory: Controller = async (ctx) => {
 
 const deleteone: Controller = async (ctx) => {
   const { id } = ctx.params;
-  const item = await db.questions.findOneAndRemove({ _id: id });
+  const item = await db.listings.findOneAndRemove({ _id: id });
   if (!item) {
     ctx.status = 400;
     ctx.body = { id };
@@ -188,8 +186,8 @@ const deleteone: Controller = async (ctx) => {
 export default {
   create,
   deleteone,
-  allquestion,
-  questionpage,
+  alllisting,
+  listingpage,
   update,
   search,
   newones,

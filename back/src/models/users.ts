@@ -8,7 +8,7 @@ export interface User {
   cell: number;
   liked: string[];
   Noti: string[];
-  lawyer: Boolean;
+  level: number;
   reviews: string[];
 }
 
@@ -33,11 +33,7 @@ const UserSchema: Schema<UserDocument> = new mongoose.Schema(
       type: String,
       required: [true, "can't be blank"],
     },
-    lawyer: {
-      type: Boolean,
-      index: true,
-      default: false,
-    },
+
     memo: {
       type: String,
       default: '유저특이사항',
@@ -83,7 +79,7 @@ UserSchema.index({
   name: 'text',
   cell: 'text',
   lawyer: 'boolean',
-  level: 'text',
+  level: 'number',
   kakaoid: 'number',
 });
 

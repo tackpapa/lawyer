@@ -15,7 +15,7 @@ const create: Controller = async (ctx) => {
   );
   user?.save();
 
-  const item = await db.tips.create({
+  const item = await db.proposals.create({
     title,
     context,
     author,
@@ -23,7 +23,7 @@ const create: Controller = async (ctx) => {
     location,
     category,
   });
-  const post = await db.tips.findOne({ _id: item._id }).populate('author');
+  const post = await db.proposals.findOne({ _id: item._id }).populate('author');
   if (ctx.request.files.pic === undefined) {
     return (ctx.status = 200), (ctx.body = post);
   }
@@ -37,7 +37,7 @@ const create: Controller = async (ctx) => {
     const body = sharp(path).resize(800, 800).png();
     var param = {
       Bucket: 'ridasprod',
-      Key: `tipimage/${item._id + i}`,
+      Key: `proposalimage/${item._id + i}`,
       ACL: 'public-read',
       Body: body.pipe(PassThrough()),
       ContentType: 'image/png',
@@ -50,7 +50,9 @@ const create: Controller = async (ctx) => {
   });
   await Promise.all(promises);
 
-  const post2 = await db.tips.findOne({ _id: item._id }).populate('author');
+  const post2 = await db.proposals
+    .findOne({ _id: item._id })
+    .populate('author');
   ctx.status = 200;
   ctx.body = post2;
 };
@@ -59,7 +61,7 @@ const update: Controller = async (ctx) => {
   const { id } = ctx.params;
   const { context, title, tags, location, category } = ctx.request.body;
   const newtag = JSON.parse(tags);
-  const post = await db.tips.findOneAndUpdate(
+  const post = await db.proposals.findOneAndUpdate(
     { _id: id },
     {
       context: context,
@@ -77,7 +79,7 @@ const update: Controller = async (ctx) => {
 
 const findone: Controller = async (ctx) => {
   const { id } = ctx.params;
-  const post = await db.tips
+  const post = await db.proposals
     .findOne({ _id: id })
     .populate('author')
     .populate('comments');
@@ -94,7 +96,7 @@ const findone: Controller = async (ctx) => {
 const byCategory: Controller = async (ctx) => {
   const { query, last } = ctx.params;
 
-  const post = await db.tips
+  const post = await db.proposals
     .find({ category: query })
     .where('createdAt')
     .lt(last)
@@ -107,7 +109,7 @@ const byCategory: Controller = async (ctx) => {
 
 const latest: Controller = async (ctx) => {
   const { last } = ctx.params;
-  const posts = await db.tips
+  const posts = await db.proposals
     .find({ createdAt: { $lt: last } })
     .populate('author')
     .sort({ _id: -1 })
@@ -116,9 +118,9 @@ const latest: Controller = async (ctx) => {
   ctx.body = posts;
 };
 
-const alltip: Controller = async (ctx) => {
+const allproposal: Controller = async (ctx) => {
   const { last } = ctx.params;
-  const posts = await db.tips
+  const posts = await db.proposals
     .find({ createdAt: { $lt: last } })
     .populate('author')
     .sort({ _id: -1 })
@@ -127,12 +129,12 @@ const alltip: Controller = async (ctx) => {
   ctx.body = posts;
 };
 
-const tippage: Controller = async (ctx) => {
+const proposalpage: Controller = async (ctx) => {
   const { page } = ctx.params;
   const row = 15;
   const skip = (parseInt(page, 10) - 1) * row;
-  const allpost = await db.tips.countDocuments({});
-  const posts = await db.tips
+  const allpost = await db.proposals.countDocuments({});
+  const posts = await db.proposals
     .find({})
     .skip(skip)
     .populate('author')
@@ -144,7 +146,7 @@ const tippage: Controller = async (ctx) => {
 
 const newones: Controller = async (ctx) => {
   const { last } = ctx.params;
-  const posts = await db.tips
+  const posts = await db.proposals
     .find({ createdAt: { $gt: last } })
     .populate('author')
     .sort({ _id: -1 });
@@ -161,7 +163,7 @@ const search: Controller = async (ctx) => {
   } else {
     db.searches.create({ query });
   }
-  const post = await db.tips
+  const post = await db.proposals
     .find({ $text: { $search: query } })
     .populate('author')
     .sort({ _id: -1 })
@@ -172,7 +174,7 @@ const search: Controller = async (ctx) => {
 
 const deleteone: Controller = async (ctx) => {
   const { id } = ctx.params;
-  const item = await db.tips.findOneAndRemove({ _id: id });
+  const item = await db.proposals.findOneAndRemove({ _id: id });
   if (!item) {
     ctx.status = 400;
     ctx.body = { id };
@@ -186,8 +188,8 @@ const deleteone: Controller = async (ctx) => {
 export default {
   create,
   deleteone,
-  alltip,
-  tippage,
+  allproposal,
+  proposalpage,
   update,
   newones,
   byCategory,

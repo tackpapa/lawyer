@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 import users from './models/users';
 import posts from './models/posts';
 import comments from './models/comments';
-import questions from './models/questions';
+import listings from './models/listings';
 import banners from './models/banners';
 import sessions from './models/sessions';
-import tips from './models/tips';
+import proposals from './models/proposals';
 import categorys from './models/categorys';
 import searches from './models/searches';
 import notis from './models/notis';
@@ -31,10 +31,10 @@ export default {
   comments,
   notis,
   posts,
-  questions,
+  listings,
   sessions,
   banners,
-  tips,
+  proposals,
   categorys,
   searches,
 };

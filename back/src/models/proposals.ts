@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface Tip {
+export interface Proposal {
   title: string;
   author: string;
   context: string;
@@ -11,13 +11,13 @@ export interface Tip {
   category: string;
 }
 
-export interface TipDocument extends Tip, Document {
+export interface ProposalDocument extends Proposal, Document {
   //method를 넣는다
   viewUp: () => void;
 }
-export interface TipModel extends Model<TipDocument> {}
+export interface ProposalModel extends Model<ProposalDocument> {}
 
-const TipSchema: Schema<TipDocument> = new mongoose.Schema(
+const ProposalSchema: Schema<ProposalDocument> = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -60,7 +60,7 @@ const TipSchema: Schema<TipDocument> = new mongoose.Schema(
     timestamps: true,
   }
 );
-TipSchema.index({
+ProposalSchema.index({
   title: 'text',
   author: 'text',
   tags: 'text',
@@ -68,10 +68,13 @@ TipSchema.index({
   location: 'text',
 });
 
-TipSchema.methods.viewUp = async function () {
+ProposalSchema.methods.viewUp = async function () {
   this.views += 1;
   this.save();
 };
-const model = mongoose.model<TipDocument, TipModel>('Tips', TipSchema);
+const model = mongoose.model<ProposalDocument, ProposalModel>(
+  'Proposals',
+  ProposalSchema
+);
 
 export default model;
